@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="flex items-center justify-between relative">
                     <div class="px-4">
-                        <RouterLink to="/" class="font-bold text-xl text-primary block py-6">NgopsBar</RouterLink>
+                        <RouterLink to="/admin-home" class="font-bold text-xl text-primary block py-6">NgopsBar</RouterLink>
                     </div>
 
                     <!-- elemen kanan -->
@@ -22,16 +22,20 @@
                             class="hidden absolute py-5 bg-white shadow-lg rounded-lg max-w-[250px] w-full  right-4 top-full lg:block lg:static lg:max-w-full lg:bg-transparent lg:shadow-none lg:rounded-none dark:shadow-slate-500">
                             <ul class="block lg:flex">
                                 <li class="group">
-                                    <RouterLink to="/"
+                                    <RouterLink to="/admin-home"
                                         class="text-base text-dark py-2 mx-8 flex group-hover:text-primary lg:mx-4">Home
                                     </RouterLink>
 
                                 </li>
                                 <li class="group">
-                                    <RouterLink to="/menu"
+                                    <RouterLink to=""
                                         class="text-base text-dark py-2 mx-8 flex group-hover:text-primary lg:mx-4">Menu
                                     </RouterLink>
-
+                                </li>
+                                <li class="group">
+                                    <RouterLink to=""
+                                        class="text-base text-dark py-2 mx-8 flex group-hover:text-primary lg:mx-4">Tambah Produk
+                                    </RouterLink>
                                 </li>
                                 <li class="group relative">
                                     <RouterLink to="/keranjang"
@@ -58,7 +62,7 @@
 import axios from 'axios';
 
 export default {
-    name: "Navbar",
+    name: "AdminNavbar",
     components: {
         axios,
     },

@@ -26,14 +26,14 @@
                  <!-- start form pilih pesanan -->
                 <form action="" class="mt-5" v-on:submit.prevent>
                     <div class="mb-5">
-                        <label for="jumlah_pemesanan"> jumlah Pesanan :</label>
-                        <input type="number" name="jumlah_pemesanan" id="jumlah_pemesanan" class="ml-2 ring-2 ring-primary"
-                            v-model="pesan.jumlah_pemesanan" />
+                        <label for="qty"> jumlah Pesanan :</label>
+                        <input type="number" name="qty" id="qty" class="ml-2 ring-2 ring-primary"
+                            v-model="pesan.qty" />
                     </div>
                     <div class="mb-5">
-                        <label for="keterangan" class="block">Keterang :</label>
-                        <textarea name="keterangan" id="keterangan" cols="25" rows="3" class="ml-32 ring-2 ring-primary"
-                            v-model="pesan.keterangan"></textarea>
+                        <label for="catatan" class="block">Keterangan :</label>
+                        <textarea name="catatan" id="catatan" cols="25" rows="3" class="ml-32 ring-2 ring-primary"
+                            v-model="pesan.catatan"></textarea>
                     </div>
                     <div class="mb-5">
                         <button class="inline-block py-3 px-5 bg-primary rounded-lg hover:opacity-80 float-right text-white"
@@ -81,13 +81,15 @@ export default {
             this.product = data;
         },
         pemesanan() {
-            if (this.pesan.jumlah_pemesanan) {
-                this.pesan.produks = this.product;
+            if (this.pesan.qty) {
+                this.pesan.product_id = this.product.id;
+                this.pesan.qty = this.pesan.qty;
+                this.pesan.catatan = this.pesan.catatan;
                 axios
-                    .post("http://localhost:3000/keranjangs", this.pesan)
+                    .post("https://localhost:7038/api/CartDetail", this.pesan)
                     .then(() => {
                         this.$router.push({ path: "/keranjang"})
-                        this.$toast.success("Sukses Menambahkan Ke Kerang", {
+                        this.$toast.success("Sukses Menambahkan Ke Keranjang", {
                             type: 'success',
                             position: 'top-right',
                             duration: 3000,
@@ -107,7 +109,7 @@ export default {
     },
     mounted() {
         axios
-            .get("http://localhost:3000/produks/" + this.$route.params.id)
+            .get("https://localhost:7038/api/Product/" + this.$route.params.id)
             .then((response) => this.setProduct(response.data))
             .catch((error) => console.log(error))
 

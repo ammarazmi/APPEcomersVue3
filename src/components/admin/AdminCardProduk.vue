@@ -5,11 +5,11 @@
             <h3><a href="#" class="block mb-3 font-semibold text-xl text-drak truncate">
                {{ product.nama }}
             </a></h3>
-            <p class="font-medium text-base text-secondary mb-2 truncate">{{product.keterangan}} 
+            <p class="font-medium text-base text-secondary mb-2 truncate">{{ product.desc }} 
                 <span></span></p>
-            <!-- <p class="font-medium text-base text-secondary mb-3"> 
+            <p class="font-medium text-base text-secondary mb-3"> 
                 <a :href="product.link.url" target="_blank">Baca Selengkapnya</a>
-            </p> -->
+            </p>
             <p class="font-medium text-base text-secondary mb-6">{{formattedPrice}}</p> 
             <RouterLink :to="'/detail/'+ product.id" class="font-medium text-sm text-white bg-primary py-4 px-6 rounded-lg hover:opacity-80">
                 Pesan
@@ -22,7 +22,7 @@
 import { RouterLink } from 'vue-router';
 
 export default {
-    name: 'CardProduk',
+    name: 'AdminCardProduk',
     props: ['product'],
     components: { RouterLink },
     computed : {

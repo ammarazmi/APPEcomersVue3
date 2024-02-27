@@ -7,7 +7,13 @@ import Menu from '@/views/Menu.vue'
 import Detail from '@/views/DetailMenu.vue'
 import keranjang from '@/views/Keranjang.vue'
 import sukses from '@/views/PesananSukses.vue'
-import Input from '@/views/InputProduk.vue'
+
+// dua
+import MainAdmin from '@/views/dua/MainAdmin.vue'
+import DashboardAdmin from '@/views/dua/DashboardAdmin.vue'
+import FormProduk from '@/views/dua/FormProduk.vue'
+import TambahProduk from '@/views/dua/TambahProduk.vue'
+
 
 
 const router = createRouter({
@@ -38,12 +44,32 @@ const router = createRouter({
       name: 'pesanan-sukses',
       component: sukses
     },
+    // admin
     {
-      path: '/InputProduk',
-      name: 'InputProduk',
-      component: Input
+      path: '/mainadmin',
+      name: 'MainAdmin',
+      component: MainAdmin
+    },
+    {
+      path: '/dashboard',
+      name: 'DashboardAdmin',
+      component: DashboardAdmin
+    },
+    {
+      path: '/formproduk',
+      name: 'FormProduk',
+      component: FormProduk
+    },
+    {
+      path: '/tambahproduk',
+      name: 'TambahProduk',
+      component: TambahProduk
     },
   ]
+  
+ 
 })
+
+
 
 export default router

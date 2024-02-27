@@ -20,7 +20,7 @@
             <div class="min-w-full bg-gradient-to-r from-white to-slate-300 border-2 border-slate-950">
                 <div class="hidden sm:grid md:grid lg:grid xl:grid grid-cols-8">
                     <div class="py-2 px-4 border-b  border-slate-950">#</div>
-                    <div class="py-2 px-4 border-b  border-slate-950">Foto</div>
+                    <div class="py-2 px-4 border-b  border-slate-950">Gambar</div>
                     <div class="py-2 px-4 border-b  border-slate-950">Makanan</div>
                     <div class="py-2 px-4 border-b  border-slate-950">Keterangan</div>
                     <div class="py-2 px-4 border-b  border-slate-950">Jumlah</div>
@@ -33,21 +33,20 @@
                     class="sm:grid md:grid lg:grid xl:grid grid-cols-8">
                     <div align="justify-center" class="border-b border-slate-950">{{ index + 1 }}</div>
                     <div class=" flex items-center py-2 px-4 border-b border-slate-950">
-                        <img :src="'/src/assets/img/' + keranjang.produks.gambar" alt="best-produk"
+                        <img :src="'/src/assets/img/' + keranjang.product.gambar" alt="best-produk"
                             class="w-[100px] h-[50px] md:w-[320px] md:h-[200px] object-cover" />
                     </div>
                     <div align="justify-center" class="py-2 px-4 border-b border-slate-950">
-                        <strong>{{ keranjang.produks.nama }}</strong>
+                        <strong>{{ keranjang.product.nama }}</strong>
                     </div>
-                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">{{ keranjang.keterangan ?
-                        keranjang.keterangan : "-" }}</div>
-                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">{{ keranjang.jumlah_pemesanan }}
-                    </div>
-                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">
-                        {{ formattedPrice(keranjang.produks.harga) }}
+                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">{{ keranjang.catatan }}</div>
+                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">{{ keranjang.qty }}
                     </div>
                     <div align="justify-center" class="py-2 px-4 border-b border-slate-950">
-                        <strong>{{ formattedPrice(keranjang.produks.harga * keranjang.jumlah_pemesanan) }}</strong>
+                        {{ formattedPrice(keranjang.product.harga) }}
+                    </div>
+                    <div align="justify-center" class="py-2 px-4 border-b border-slate-950">
+                        <strong>{{ formattedPrice(keranjang.totalHarga) }}</strong>
                     </div>
                     <div align="justify-center" class="py-2 px-4 border-b border-slate-950">
                         <button @click="hapusKeranjang(keranjang.id)"
@@ -64,7 +63,7 @@
                         <strong>Total Harga :</strong>
                     </div>
                     <div class="col-span-1 py-2 px-4">
-                        <strong>{{ totalHarga }}</strong>
+                        <strong>{{ subTotal }}</strong>
                     </div>
                 </div>
             </div>
@@ -75,14 +74,13 @@
             <div class="relative  mb-5  mt-5">
                 <form action="" class="mt-5" v-on:submit.prevent>
                     <div class="mb-5">
-                        <label for="nama_pemesan">Nama Pemesan :</label>
-                        <input type="text" name="nama_pemesan" id="nama_pemesan" class="ml-2 ring-2 ring-primary"
-                            v-model="pesan.nama_pemesan" />
+                        <label for="nama">Nama Pemesan :</label>
+                        <input type="text" name="nama" id="nama" class="ml-2 ring-2 ring-primary" v-model="pesan.nama" />
                     </div>
                     <div class="mb-5">
-                        <label for="nomer_meja">Nomer Meja :</label>
-                        <input type="number" name="nomer_meja" id="nomer_meja" class="ml-9 ring-2 ring-primary"
-                            v-model="pesan.nomer_meja" />
+                        <label for="noMeja">Nomer Meja :</label>
+                        <input type="number" name="noMeja" id="noMeja" class="ml-9 ring-2 ring-primary"
+                            v-model="pesan.noMeja" />
                     </div>
                     <div class="mb-5 text-right">
                         <button class="inline-block py-3 px-5 bg-primary rounded-lg hover:opacity-80 text-white"
@@ -131,7 +129,7 @@ export default {
                 return;
             }
             axios
-                .delete("http://localhost:3000/keranjangs/" + id)
+                .delete("https://localhost:7038/api/CartDetail/" + id)
                 .then(() => {
                     this.$toast.error("Sukses Menghapus Menu", {
                         type: 'error',
@@ -140,25 +138,44 @@ export default {
                         dismissible: true,
                     });
                     axios
-                        .get("http://localhost:3000/keranjangs/")
+                        .get("https://localhost:7038/api/CartDetail/")
                         .then((response) => this.setKeranjangs(response.data))
                         .catch((error) => console.log(error))
                 })
                 .catch((error) => console.log(error))
         },
         chekout() {
-            if (this.pesan.nama_pemesan && this.pesan.nomer_meja) {
-                this.pesan.keranjangs = this.keranjangs;
+            if (this.pesan.nama && this.pesan.noMeja) {
+                this.pesan.nama = this.pesan.nama;
+                this.pesan.noMeja = this.pesan.noMeja
 
+                // Kirim data pesanan (Order) ke API
                 axios
-                    .post("http://localhost:3000/pesanans", this.pesan)
-                    .then(() => {
-                        // hapus semua keranjang
-                        this.keranjangs.map(function (item) {
-                            return axios
-                                .delete("http://localhost:3000/keranjangs/" + item.id)
-                                .catch((error) => console.log(error));
-                        })
+                    .post("https://localhost:7038/api/Order", this.pesan)
+
+                    .then((orderResponse) => {
+                        const orderId = orderResponse.data.id; // Dapatkan ID pesanan dari respons POST
+
+                        if (this.keranjangs.length > 0) {
+                            // Untuk setiap item dalam keranjang
+                            this.keranjangs.forEach((item) => {
+                                // Kirim data OrderDetail untuk setiap item dalam keranjang ke API
+                                axios
+                                    .post("https://localhost:7038/api/OrderDetail", {
+                                        order_id: orderId,
+                                        product_id: item.product.id,
+                                        qty: item.qty,
+                                        catatan: item.catatan
+                                    })
+                                    .then(() => {
+                                        // Setelah berhasil membuat OrderDetail, hapus item dari keranjang
+                                        axios
+                                            .delete("https://localhost:7038/api/CartDetail/" + item.id)
+                                            .catch((error) => console.log(error));
+                                    })
+                                    .catch((error) => console.log(error));
+                            });
+                        }
 
 
                         this.$router.push({ path: "/pesanan-sukses" })
@@ -182,7 +199,7 @@ export default {
     },
     mounted() {
         axios
-            .get("http://localhost:3000/keranjangs/")
+            .get("https://localhost:7038/api/CartDetail")
             .then((response) => this.setKeranjangs(response.data))
             .catch((error) => console.log(error))
     },
@@ -192,8 +209,8 @@ export default {
                 return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(harga || 0);
             };
         },
-        totalHarga() {
-            const total = this.keranjangs.reduce((acc, data) => acc + data.produks.harga * data.jumlah_pemesanan, 0);
+        subTotal() {
+            const total = this.keranjangs.reduce((acc, data) => acc + data.product.harga * data.qty, 0);
             return this.formattedPrice(total);
         }
 
@@ -201,5 +218,3 @@ export default {
 
 }   
 </script>
-
-
