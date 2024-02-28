@@ -50,12 +50,14 @@
                                 <i class="fas fa-trash"></i>
                             </span>
                         </button>
-                        <button @click="editproduks(produks.id)"
+                        <router-link :to="'/editproduk/'+ produks.id">
+                        <button 
                             class="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             <span class="justify-center">
                                 <i class="fas fa-edit"></i>
                             </span>
                         </button>
+                        </router-link>
                     </div>
                     <!-- End Aksi -->
                 </div>
@@ -96,7 +98,7 @@ export default {
                 return;
             }
             axios
-                .delete("http://localhost:3000/produks/" + id)
+                .delete("https://localhost:7038/api/Product/" + id)
                 .then(() => {
                     this.$toast.error("Sukses Menghapus Menu", {
                         type: 'error',
@@ -105,7 +107,7 @@ export default {
                         dismissible: true,
                     });
                     axios
-                        .get("http://localhost:3000/produks/")
+                        .get("https://localhost:7038/api/Product/")
                         .then((response) => this.setProduks(response.data))
                         .catch((error) => console.log(error))
                 })
@@ -114,7 +116,7 @@ export default {
     },
     mounted() {
         axios
-            .get("http://localhost:3000/produks")
+            .get("https://localhost:7038/api/Product")
             .then((response) => this.setProduks(response.data))
             .catch((error) => console.log(error))
     },

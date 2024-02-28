@@ -1,5 +1,4 @@
 <template>
-
     <!-- start breadcumb -->
     <div class="container">
         <div class="flex items-center text-primary md:ml-5 font-medium bg-primary py-4 px-4 rounded mt-10 mb-10">
@@ -25,56 +24,52 @@
                             <input type="text" class="w-full border-2 border-primary rounded-lg" />
                         </div>
                     </div> -->
-                    <div class="hidden mt-5 text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
+                    <!-- <div class="hidden mt-5 text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary py-2 px-4"><strong>Kode Produk :</strong></div>
                         <div class="py-2 px-4">
-                            <input type="text" class="w-full border-2 border-primary rounded-lg" v-model="tambahproduk.Kode" />
+                            <input type="text" class="w-full border-2 border-primary rounded-lg"  />
                         </div>
-                    </div>
-                    <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
+                    </div> -->
+                    <div class="mt-5 hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary py-2 px-4"><strong> Nama Produk :</strong></div>
                         <div class="py-2 px-4">
-                            <input type="text" class="w-full rounded-lg border-2 border-primary" v-model="tambahproduk.nama" />
+                            <input type="text" class="w-full rounded-lg border-2 border-primary" v-model="formEdit.nama" />
                         </div>
                     </div>
                     <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary py-2 px-4"><strong>Harga Produk : </strong></div>
                         <div class="py-2 px-4">
-                            <input type="text" class="w-full rounded-lg border-2 border-primary" v-model="tambahproduk.Harga" />
+                            <input type="number" class="w-full rounded-lg border-2 border-primary"
+                                v-model="formEdit.harga" />
                         </div>
                     </div>
                     <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary py-2 px-4"><strong>Status Stok : </strong></div>
                         <div class="py-2 px-4">
-                            <select class="w-full rounded-lg border-2 border-primary" v-model="tambahproduk.is_ready" >
-                                <option value="option1">==Pilih==</option>
-                                <option value="option2">Ready</option>
-                                <option value="option3">Kosong</option>
+                            <select class="w-full rounded-lg border-2 border-primary" v-model="formEdit.stok">
+                                <option value="pilih">==Pilih==</option>
+                                <option value="Ready">Ready</option>
+                                <option value="Tidak Ready">Kosong</option>
                             </select>
                         </div>
                     </div>
                     <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
-                        <div class="text-primary py-2 px-4"><strong>Deskripsi : </strong></div>
+                        <div class="text-primary py-2 px-4"><strong>keterangan : </strong></div>
                         <div class="py-2 px-4">
-                            <textarea class="w-full border-2 border-primary rounded-lg" v-model="tambahproduk.desc" ></textarea>
+                            <textarea class="w-full border-2 border-primary rounded-lg"
+                                v-model="formEdit.keterangan"></textarea>
                         </div>
                     </div>
-                    <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
+                    <!-- <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary"><strong> Link Produk : </strong></div>
                         <div class="py-2 px-4">
-                            <textarea class="w-full border-2 border-primary rounded-lg" v-model="tambahproduk.link" ></textarea>
+                            <textarea class="w-full border-2 border-primary rounded-lg" ></textarea>
                         </div>
-                    </div>
-                    <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
-                        <div class="text-primary py-2 px-4"><strong>Harga Produk : </strong></div>
-                        <div class="py-2 px-4">
-                            <textarea class="w-full border-2 border-primary rounded-lg" v-model="tambahproduk.harga" ></textarea>
-                        </div>
-                    </div>
+                    </div> -->
                     <div class="hidden text-center sm:grid md:grid lg:grid xl:grid grid-cols-2">
                         <div class="text-primary py-2 px-4"><strong>Upload Gambar : </strong></div>
                         <div class="py-2 px-4">
-                            <input type="file" id="gambar" name="gambar" accept="image/*"
+                            <input type="file" id="gambar" name="gambar" accept="image/* "
                                 class="-mr-10 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-highlight text-sm" />
                         </div>
                     </div>
@@ -83,10 +78,9 @@
                             <RouterLink to="/formproduk" class="bg-red-500 p-3 m-2 rounded-lg">
                                 Kembali
                             </RouterLink>
-                            <button class="bg-green-500 p-2 m-2 rounded-lg hover:opacity-80"
-                            @click="tambahProduk">
-                            Simpan
-                        </button>
+                            <button class="bg-green-500 p-2 m-2 rounded-lg hover:opacity-80">
+                                Edit
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -101,95 +95,57 @@ import axios from 'axios';
 
 export default {
     name: "EditProduk",
+    props: ['product'],
     components: {
         axios
     },
     data() {
         return {
-            keranjangs: [],
-            
+            formEdit: {
+                nama: '',
+                harga: '',
+                isReady: '',
+                keterangan: '',
+                gambar: null
+            },
         }
     },
+
     methods: {
-        setKeranjangs(data) {
-            this.keranjangs = data;
-        },
-        hapusKeranjang(id) {
-            // Show a confirmation alert before deleting
-            const isConfirmed = window.confirm("Apakah Anda yakin ingin menghapus item ini dari keranjang?");
+        async fetchData() {
+            try {
+                // Lakukan permintaan GET ke endpoint API
+                const response = await axios.get(`https://localhost:7038/api/Product/${this.$route.params.id}`);
+                const product = response.data;
 
-            if (!isConfirmed) {
-                // User cancelled the deletion, do nothing
-                return;
-            }
-            axios
-                .delete("http://localhost:3000/keranjangs/" + id)
-                .then(() => {
-                    this.$toast.error("Sukses Menghapus Menu", {
-                        type: 'error',
-                        position: 'top-right',
-                        duration: 3000,
-                        dismissible: true,
-                    });
-                    axios
-                        .get("http://localhost:3000/keranjangs/")
-                        .then((response) => this.setKeranjangs(response.data))
-                        .catch((error) => console.log(error))
-                })
-                .catch((error) => console.log(error))
-        },
-        chekout() {
-            if (this.pesan.nama_pemesan && this.pesan.nomer_meja) {
-                this.pesan.keranjangs = this.keranjangs;
+                // Tentukan status stok berdasarkan nilai di dalam basis data
+                const stockStatus = product.isReady ? "Ready" : "Tidak Ready";
 
-                axios
-                    .post("http://localhost:3000/pesanans", this.pesan)
-                    .then(() => {
-                        // hapus semua keranjang
-                        this.keranjangs.map(function (item) {
-                            return axios
-                                .delete("http://localhost:3000/keranjangs/" + item.id)
-                                .catch((error) => console.log(error));
-                        })
-
-
-                        this.$router.push({ path: "/pesanan-sukses" })
-                        this.$toast.success("Sukses Menambahkan Ke Kerang", {
-                            type: 'success',
-                            position: 'top-right',
-                            duration: 3000,
-                            dismissible: true,
-                        });
-                    })
-                    .catch((err) => console.log(err))
-            } else {
-                this.$toast.error("Nama Pemesan Dan Nomor Meja Harus Diisi...", {
+                // Atur objek formEdit dengan data produk yang diperoleh
+                this.formEdit = {
+                    nama: product.nama,
+                    harga: product.harga,
+                    stok: stockStatus,
+                    keterangan: product.keterangan,
+                    gambar: product.gambar
+                };
+            } catch (error) {
+                // Tangani kesalahan
+                console.error('Error fetching product:', error);
+                this.$toast.error('Terjadi kesalahan saat mengambil data produk', {
                     type: 'error',
                     position: 'top-right',
                     duration: 3000,
-                    dismissible: true,
+                    dismissible: true
                 });
             }
         },
     },
-    mounted() {
-        axios
-            .get("http://localhost:3000/keranjangs/")
-            .then((response) => this.setKeranjangs(response.data))
-            .catch((error) => console.log(error))
-    },
-    computed: {
-        formattedPrice() {
-            return (harga) => {
-                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(harga || 0);
-            };
-        },
-        totalHarga() {
-            const total = this.keranjangs.reduce((acc, data) => acc + data.produks.harga * data.jumlah_pemesanan, 0);
-            return this.formattedPrice(total);
-        }
 
-    }
+    mounted() {
+        this.fetchData();
+
+    },
 
 }   
 </script>

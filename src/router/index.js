@@ -13,6 +13,7 @@ import MainAdmin from '@/views/dua/MainAdmin.vue'
 import DashboardAdmin from '@/views/dua/DashboardAdmin.vue'
 import FormProduk from '@/views/dua/FormProduk.vue'
 import TambahProduk from '@/views/dua/TambahProduk.vue'
+import EditProduk from '@/views/dua/EditProduk.vue'
 
 
 
@@ -64,6 +65,11 @@ const router = createRouter({
       path: '/tambahproduk',
       name: 'TambahProduk',
       component: TambahProduk
+    },
+    {
+      path: '/editproduk/:id',
+      name: 'EditProduk',
+      component: EditProduk
     },
   ]
   
